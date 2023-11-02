@@ -17,7 +17,7 @@ from utils.preprocessor import preprocess_input
 
 # parameters
 batch_size = 32
-num_epochs = 10000
+num_epochs = 1
 input_shape = (64, 64, 1)
 validation_split = .2
 verbose = 1
@@ -53,10 +53,11 @@ for dataset_name in datasets:
     reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1,
                                   patience=int(patience/4), verbose=1)
     trained_models_path = base_path + dataset_name + '_mini_XCEPTION'
-    model_names = trained_models_path + '.{epoch:02d}-{val_acc:.2f}.hdf5'
+    model_names = trained_models_path + '.{epoch:02d}-{val_accuracy:.2f}.hdf5'  # Changed 'val_acc' to 'val_accuracy'
     model_checkpoint = ModelCheckpoint(model_names, 'val_loss', verbose=1,
                                                     save_best_only=True)
     callbacks = [model_checkpoint, csv_logger, early_stop, reduce_lr]
+
 
     # loading dataset
     data_loader = DataManager(dataset_name, image_size=input_shape[:2])
